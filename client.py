@@ -1,8 +1,9 @@
 import socket                   # Import socket module
 import letero
+import encryptor
 
 s = socket.socket()             # Create a socket object
-host = ""  #Ip address that the TCPServer  is there
+host = ""  #Ip address that the TCPServer is there
 port = 20000                     # Reserve a port for your service every new transfer wants a new port or you must wait.
 
 
@@ -18,6 +19,7 @@ while True:
         break
 
 data = letero.USERAGENT + str(send) + " " + input("Input the data: ")
+data = encryptor.encrypt(1, 3, data)
 s.send(data.encode())
 
 with open('received_file.mp3', 'wb') as f:

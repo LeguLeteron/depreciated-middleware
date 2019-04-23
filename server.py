@@ -1,7 +1,6 @@
 import letero
 import socket
-
-
+import encryptor
 
 port = 20000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,6 +20,7 @@ while True:
     print("Got connnection from {}".format(addr))
 
     data = conn.recv(1024).decode('utf-8')
+    data = encryptor.decrypt(1, 3, data)
     print("Server received {}".format(data))
 
     header = data.split()[:len(letero.USERAGENT.split())]
