@@ -1,6 +1,7 @@
 import letero
 import socket
-import encryptor
+import kck
+import braille
 
 port = 20000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -12,6 +13,8 @@ except OSError:
     s.bind((host, port))
 s.listen(5)
 
+legu = letero.Letero()
+
 print("Server started.")
 
 
@@ -20,11 +23,11 @@ while True:
     print("Got connnection from {}".format(addr))
 
     data = conn.recv(1024).decode('utf-8')
-    data = encryptor.decrypt(1, 3, data)
+    data = kck.decrypt(1, 3, data)
     print("Server received {}".format(data))
 
-    header = data.split()[:len(letero.USERAGENT.split())]
-    realdata = data.split()[len(letero.USERAGENT.split()):]
+    header = data.split()[:len(legu.useragent)]
+    realdata = data.split()[len(legu.useragent)-1:]
 
     if "LeguLeteron" not in header[0]:
         conn.send(letero.MODE_ERROR.encode())
